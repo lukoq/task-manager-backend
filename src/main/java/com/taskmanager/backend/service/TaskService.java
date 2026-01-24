@@ -29,10 +29,15 @@ public class TaskService {
     }
 
     public Task updateStatus(Long id, TaskStatus status) {
-        Task task = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-
+        Task task = repository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
         task.setStatus(status);
         return repository.save(task);
+    }
+
+    public void deleteTask(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Task not found");
+        }
+        repository.deleteById(id);
     }
 }
