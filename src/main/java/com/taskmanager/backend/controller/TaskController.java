@@ -2,6 +2,7 @@ package com.taskmanager.backend.controller;
 
 import com.taskmanager.backend.entity.Task;
 import com.taskmanager.backend.service.TaskService;
+import com.taskmanager.backend.dto.UpdateTaskStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,5 +26,12 @@ public class TaskController {
     @PostMapping
     public Task createTask(@RequestBody Task task) {
         return service.saveTask(task);
+    }
+    @PostMapping("/status/{id}")
+    public Task updateTaskStatus(
+            @PathVariable Long id,
+            @RequestBody UpdateTaskStatus request
+    ) {
+        return service.updateStatus(id, request.getStatus());
     }
 }

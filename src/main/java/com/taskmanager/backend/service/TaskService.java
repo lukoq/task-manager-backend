@@ -2,6 +2,7 @@ package com.taskmanager.backend.service;
 
 import com.taskmanager.backend.entity.Task;
 import com.taskmanager.backend.repository.TaskRepository;
+import com.taskmanager.backend.entity.TaskStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
-        return repository.findAll();
+        return repository.findAllOrdered();
     }
 
     public Task saveTask(Task task) {
@@ -25,5 +26,13 @@ public class TaskService {
 
     public Task getTaskById(Long id) {
         return repository.findById(id).orElse(null);
+    }
+
+    public Task updateStatus(Long id, TaskStatus status) {
+        Task task = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        task.setStatus(status);
+        return repository.save(task);
     }
 }
