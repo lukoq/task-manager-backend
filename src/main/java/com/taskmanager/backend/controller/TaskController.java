@@ -4,6 +4,7 @@ import com.taskmanager.backend.entity.Task;
 import com.taskmanager.backend.service.TaskService;
 import com.taskmanager.backend.dto.UpdateTaskStatus;
 import org.springframework.web.bind.annotation.*;
+import com.taskmanager.backend.dto.TaskResponseDto;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getTasks() {
+    public List<TaskResponseDto> getTasks() {
         return service.getAllTasks();
     }
     @PostMapping
