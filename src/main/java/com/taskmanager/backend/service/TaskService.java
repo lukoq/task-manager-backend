@@ -32,6 +32,12 @@ public class TaskService {
         return repository.save(task);
     }
 
+    public Task updateDescription(Long id, String newDesc) {
+        Task task = repository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        task.setDescription(newDesc);
+        return repository.save(task);
+    }
+
     public void deleteTask(Long id) {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Task not found");

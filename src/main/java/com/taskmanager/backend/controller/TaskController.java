@@ -5,6 +5,7 @@ import com.taskmanager.backend.service.TaskService;
 import com.taskmanager.backend.dto.UpdateTaskStatus;
 import org.springframework.web.bind.annotation.*;
 import com.taskmanager.backend.dto.TaskResponseDto;
+import com.taskmanager.backend.dto.UpdateTaskDescription;
 
 import java.util.List;
 
@@ -35,6 +36,19 @@ public class TaskController {
     ) {
         return service.updateStatus(id, request.getStatus());
     }
+    @PostMapping("/description/{id}")
+    public Task updateTaskDescription(
+            @PathVariable Long id,
+            @RequestBody UpdateTaskDescription request
+    ) {
+        return service.updateDescription(id, request.getDescription());
+    }
+
+
+
+
+
+
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         System.out.println("Próbuję usunąć zadanie o id: " + id);
