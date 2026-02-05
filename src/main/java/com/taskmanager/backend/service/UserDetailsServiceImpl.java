@@ -1,7 +1,6 @@
 package com.taskmanager.backend.service;
 
 import com.taskmanager.backend.entity.User;
-import com.taskmanager.backend.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -3,11 +3,13 @@ package com.taskmanager.backend.controller;
 import com.taskmanager.backend.service.UserService;
 import com.taskmanager.backend.dto.RegisterRequestDto;
 import com.taskmanager.backend.dto.LoginRequestDto;
+import com.taskmanager.backend.dto.AuthResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.taskmanager.backend.service.JwtService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -16,10 +18,12 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -29,14 +33,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequestDto request) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 request.getEmail(), 
                 request.getPassword()
             )
         );
-        return ResponseEntity.ok("OK");
+        String token = jwtService.generateToken(request.getEmail());
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 }
     
