@@ -2,8 +2,12 @@ package com.taskmanager.backend.service;
 
 import com.taskmanager.backend.entity.Task;
 import com.taskmanager.backend.repository.TaskRepository;
+import com.taskmanager.backend.repository.UserRepository;
 import com.taskmanager.backend.entity.TaskStatus;
+import com.taskmanager.backend.entity.User;
 import com.taskmanager.backend.dto.TaskResponseDto;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -12,13 +16,19 @@ import java.util.List;
 @Service
 public class TaskService {
 
+    @Autowired
     private final TaskRepository repository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public TaskService(TaskRepository repository) {
         this.repository = repository;
     }
 
-    public Task saveTask(Task task) {
+    public Task saveTask(Task task, String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        task.setUser(user);
         return repository.save(task);
     }
 
@@ -45,8 +55,8 @@ public class TaskService {
         repository.deleteById(id);
     }
 
-    public List<TaskResponseDto> getAllTasks() {
-        return repository.findAllOrdered()
+    public List<TaskResponseDto> getTasksForUser(String email) {
+        return repository.findByUserEmailOrderByCreatedAtAsc(email)
                 .stream()
                 .map(task -> new TaskResponseDto(
                         task.getId(),

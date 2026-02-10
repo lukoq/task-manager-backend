@@ -3,6 +3,8 @@ package com.taskmanager.backend.controller;
 import com.taskmanager.backend.entity.Task;
 import com.taskmanager.backend.service.TaskService;
 import com.taskmanager.backend.dto.UpdateTaskStatus;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.taskmanager.backend.dto.TaskResponseDto;
 import com.taskmanager.backend.dto.UpdateTaskDescription;
@@ -22,12 +24,13 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskResponseDto> getTasks() {
-        return service.getAllTasks();
+    public List<TaskResponseDto> getTasks(Authentication authentication) {
+        return service.getTasksForUser(authentication.getName());
     }
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return service.saveTask(task);
+    public Task createTask(@RequestBody Task task, Authentication authentication) {
+        String email = authentication.getName();
+        return service.saveTask(task, email);
     }
     @PostMapping("/status/{id}")
     public Task updateTaskStatus(

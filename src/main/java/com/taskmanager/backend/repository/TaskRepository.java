@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    default List<Task> findAllOrdered() {
-        return findAll(Sort.by(Sort.Direction.ASC, "createdAt"));
+    List<Task> findByUserEmailOrderByCreatedAtAsc(String email);
+    List<Task> findByUserEmail(String email, Sort sort);
+
+    default List<Task> findAllByUserOrdered(String email) {
+        return findByUserEmail(email, Sort.by(Sort.Direction.ASC, "createdAt"));
     }
 }

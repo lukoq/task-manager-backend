@@ -3,7 +3,10 @@ package com.taskmanager.backend.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
+@Table(name = "tasks")
 public class Task {
 
     @Id
@@ -17,6 +20,13 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY) 
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore //Ignored during the serialization to Json
+    private User user;
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
