@@ -63,7 +63,8 @@ public class TaskService {
                         task.getTitle(),
                         task.getDescription(),
                         task.getStatus(),
-                        task.getCreatedAt()
+                        task.getCreatedAt(),
+                        task.getDueDate()
                 ))
                 .toList();
     }

@@ -2,6 +2,7 @@ package com.taskmanager.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,6 +26,12 @@ public class Task {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore //Ignored during the serialization to Json
     private User user;
+
+
+    @Column(name = "due_date") 
+    private LocalDate dueDate;
+
+
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
 
@@ -42,4 +49,7 @@ public class Task {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDate getDueDate() { return dueDate; }
+    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
 }

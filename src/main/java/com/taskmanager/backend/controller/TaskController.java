@@ -46,15 +46,9 @@ public class TaskController {
     ) {
         return service.updateDescription(id, request.getDescription());
     }
-
-
-
-
-
-
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
-        System.out.println("Próbuję usunąć zadanie o id: " + id);
+        System.out.println("Removing: " + id);
         service.deleteTask(id);
     }
 }
