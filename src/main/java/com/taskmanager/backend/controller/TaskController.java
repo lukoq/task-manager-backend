@@ -4,9 +4,11 @@ import com.taskmanager.backend.entity.Task;
 import com.taskmanager.backend.service.TaskService;
 import com.taskmanager.backend.dto.UpdateTaskStatus;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.taskmanager.backend.dto.TaskResponseDto;
+import com.taskmanager.backend.dto.TaskStatsDto;
 import com.taskmanager.backend.dto.UpdateTaskDescription;
 
 import java.util.List;
@@ -25,7 +27,8 @@ public class TaskController {
 
     @GetMapping
     public List<TaskResponseDto> getTasks(Authentication authentication) {
-        return service.getTasksForUser(authentication.getName());
+        String email = authentication.getName();
+        return service.getTasksForUser(email);
     }
     @PostMapping
     public Task createTask(@RequestBody Task task, Authentication authentication) {
@@ -50,5 +53,11 @@ public class TaskController {
     public void deleteTask(@PathVariable Long id) {
         System.out.println("Removing: " + id);
         service.deleteTask(id);
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<TaskStatsDto> getStats(Authentication authentication) {
+        String email = authentication.getName(); 
+        return ResponseEntity.ok(service.getTaskStatistics(email));
     }
 }

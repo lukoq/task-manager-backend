@@ -6,11 +6,12 @@ import com.taskmanager.backend.repository.UserRepository;
 import com.taskmanager.backend.entity.TaskStatus;
 import com.taskmanager.backend.entity.User;
 import com.taskmanager.backend.dto.TaskResponseDto;
+import com.taskmanager.backend.dto.TaskStatsDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -67,5 +68,18 @@ public class TaskService {
                         task.getDueDate()
                 ))
                 .toList();
+    }
+
+    public TaskStatsDto getTaskStatistics(String email) {
+        LocalDate today = LocalDate.now();
+
+        long todo = repository.countByStatusAndUserEmail("TODO", email);
+        long inProgress = repository.countByStatusAndUserEmail("IN_PROGRESS", email);
+        long done = repository.countByStatusAndUserEmail("DONE", email);
+
+        long total = repository.countByUserEmail(email);
+        long overdue = repository.countByDueDateBeforeAndUserEmail(today, email);;
+    
+        return new TaskStatsDto(todo, inProgress, done, total, overdue);
     }
 }
