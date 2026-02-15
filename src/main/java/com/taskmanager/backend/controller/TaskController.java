@@ -26,9 +26,11 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskResponseDto> getTasks(Authentication authentication) {
+    public ResponseEntity<List<TaskResponseDto>> getTasks(Authentication authentication) {
         String email = authentication.getName();
-        return service.getTasksForUser(email);
+        List<TaskResponseDto> tasks = service.getTasksForUser(email);
+    
+        return ResponseEntity.ok(tasks); 
     }
     @PostMapping
     public Task createTask(@RequestBody Task task, Authentication authentication) {
