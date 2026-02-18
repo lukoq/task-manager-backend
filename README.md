@@ -48,4 +48,14 @@ Add your JWT secret key:
 ```properties
 jwt.secret=${JWT_SECRET_KEY}
 ```
+---
+
+## API Documentation (Swagger)
+
+Once the application is running, Swagger UI is available at:
+
+```
+http://localhost:8080/swagger-ui/index.html#/
+```
+
 
