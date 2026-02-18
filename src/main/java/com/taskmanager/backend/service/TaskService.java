@@ -73,9 +73,9 @@ public class TaskService {
     public TaskStatsDto getTaskStatistics(String email) {
         LocalDate today = LocalDate.now();
 
-        long todo = repository.countByStatusAndUserEmail("TODO", email);
-        long inProgress = repository.countByStatusAndUserEmail("IN_PROGRESS", email);
-        long done = repository.countByStatusAndUserEmail("DONE", email);
+        long todo = repository.countByStatusAndUserEmail(TaskStatus.TODO, email);
+        long inProgress = repository.countByStatusAndUserEmail(TaskStatus.IN_PROGRESS, email);
+        long done = repository.countByStatusAndUserEmail(TaskStatus.DONE, email);
 
         long total = repository.countByUserEmail(email);
         long overdue = repository.countByDueDateBeforeAndUserEmail(today, email);;
