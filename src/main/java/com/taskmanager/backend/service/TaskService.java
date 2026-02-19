@@ -23,8 +23,9 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public TaskService(TaskRepository repository) {
+    public TaskService(TaskRepository repository, UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     public Task saveTask(Task task, String email) {
