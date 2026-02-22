@@ -180,7 +180,7 @@ class TaskServiceTest {
         verify(taskRepository, never()).save(any(Task.class));
     }
     @Test
-    void shouldReturnTaskResponseDtoListForUser() {
+    void shouldReturnTaskResponseDtoListForUser() { //getTasksForUser() test 
         String EMAIL = "test@test.pl";
         
         Task task1 = new Task();
@@ -210,6 +210,26 @@ class TaskServiceTest {
 
         verify(taskRepository, times(1)).findByUserEmailOrderByCreatedAtAsc(EMAIL);
     }
+    @Test 
+    void shouldReturnTaskByIdCorrectly() { //getTaskById() test 
+        Long taskId = 1L;
+        Task task = new Task();
+        task.setId(taskId);
+        task.setTitle("Task");
+        task.setDescription("Desc");
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+
+        Task result = taskService.getTaskById(taskId);
+
+        assertNotNull(result);
+        assertEquals(taskId, result.getId());
+        assertEquals("Task", result.getTitle());
+        verify(taskRepository, times(1)).findById(taskId);
+    }
+
+
+
 
    
 }
