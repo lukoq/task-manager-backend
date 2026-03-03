@@ -2,11 +2,14 @@ package com.taskmanager.backend.controller;
 
 import com.taskmanager.backend.entity.Task;
 import com.taskmanager.backend.service.TaskService;
+import com.taskmanager.backend.service.UserService;
 import com.taskmanager.backend.dto.UpdateTaskStatus;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import com.taskmanager.backend.dto.ProfileInfoDto;
 import com.taskmanager.backend.dto.TaskResponseDto;
 import com.taskmanager.backend.dto.TaskStatsDto;
 import com.taskmanager.backend.dto.UpdateTaskDescription;
@@ -20,9 +23,11 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService service;
+    private final UserService userService;
 
-    public TaskController(TaskService service) {
+    public TaskController(TaskService service, UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -61,5 +66,11 @@ public class TaskController {
     public ResponseEntity<TaskStatsDto> getStats(Authentication authentication) {
         String email = authentication.getName(); 
         return ResponseEntity.ok(service.getTaskStatistics(email));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileInfoDto> getProfile(Authentication authentication) {
+        String email = authentication.getName(); 
+        return ResponseEntity.ok(userService.getUserProfile(email));
     }
 }
