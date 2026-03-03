@@ -2,6 +2,7 @@ package com.taskmanager.backend.service;
 
 import com.taskmanager.backend.entity.User;
 import com.taskmanager.backend.repository.UserRepository;
+import com.taskmanager.backend.dto.ProfileInfoDto;
 import com.taskmanager.backend.dto.RegisterRequestDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,10 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public ProfileInfoDto getUserProfile(String email) {
+        return userRepository.findByEmail(email).map(ProfileInfoDto::fromEntity)
+                            .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
