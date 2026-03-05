@@ -2,6 +2,7 @@ package com.taskmanager.backend.service;
 
 import com.taskmanager.backend.entity.User;
 import com.taskmanager.backend.repository.UserRepository;
+import com.taskmanager.backend.dto.ChangePasswordRequestDto;
 import com.taskmanager.backend.dto.ProfileInfoDto;
 import com.taskmanager.backend.dto.RegisterRequestDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,5 +49,14 @@ public class UserService {
     public ProfileInfoDto getUserProfile(String email) {
         return userRepository.findByEmail(email).map(ProfileInfoDto::fromEntity)
                             .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public void changePassword(String email, ChangePasswordRequestDto request) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
+            throw new RuntimeException("Doesn't match!");
+        }
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
     }
 }

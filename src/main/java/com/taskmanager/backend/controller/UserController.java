@@ -4,11 +4,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.taskmanager.backend.dto.ChangePasswordRequestDto;
 import com.taskmanager.backend.dto.ProfileInfoDto;
 import com.taskmanager.backend.service.UserService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -23,5 +27,21 @@ public class UserController {
     public ResponseEntity<ProfileInfoDto> getProfile(Authentication authentication) {
         String email = authentication.getName(); 
         return ResponseEntity.ok(service.getUserProfile(email));
+    }
+
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(Authentication authentication, @RequestBody ChangePasswordRequestDto request) {
+    
+        if(authentication == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        try {
+            service.changePassword(authentication.getName(), request);
+            return ResponseEntity.ok("Your password has been changed successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
