@@ -1,7 +1,9 @@
 package com.taskmanager.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record ChangePasswordRequestDto(
-    String oldPassword,
-    String newPassword
+    @JsonProperty("oldPassword") String oldPassword,
+    @JsonProperty("newPassword") String newPassword
 )
 {}
