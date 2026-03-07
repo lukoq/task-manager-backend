@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.taskmanager.backend.dto.ChangePasswordRequestDto;
 import com.taskmanager.backend.dto.ProfileInfoDto;
 import com.taskmanager.backend.service.UserService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
