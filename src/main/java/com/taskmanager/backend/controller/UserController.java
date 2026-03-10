@@ -1,12 +1,15 @@
 package com.taskmanager.backend.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.taskmanager.backend.dto.ChangePasswordRequestDto;
@@ -44,4 +47,25 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping(value = "/profile-picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> uploadProfilePicture(Authentication authentication, 
+                                                    @RequestParam("file") MultipartFile file) throws java.io.IOException {
+
+        if(authentication == null) {
+            return ResponseEntity.status(401).build();
+        }                                                
+        service.uploadProfilePicture(authentication.getName(), file);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/profile-picture")
+    public ResponseEntity<byte[]> getProfilePicture(Authentication authentication) {
+        if(authentication == null) {
+            return ResponseEntity.status(401).build();
+        }    
+        return service.getProfilePicture(authentication.getName());
+    }
+
+
 }

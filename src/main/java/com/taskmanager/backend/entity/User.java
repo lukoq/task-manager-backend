@@ -17,6 +17,14 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+    
+    @Lob
+    @Column(name = "profile_picture", columnDefinition = "bytea")
+    private byte[] profilePicture;
+
+    @Column(name = "profile_picture_type")
+    private String profilePictureType;
+
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -29,5 +37,11 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public byte[] getProfilePicture() { return profilePicture; }
+    public void setProfilePicture(byte[] profilePicture) { this.profilePicture = profilePicture; }
+
+    public String getProfilePictureType() { return profilePictureType; }
+    public void setProfilePictureType(String profilePictureType) { this.profilePictureType = profilePictureType; }
 
 }
