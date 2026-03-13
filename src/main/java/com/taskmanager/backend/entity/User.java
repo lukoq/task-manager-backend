@@ -18,7 +18,6 @@ public class User {
     @Column(nullable = false)
     private String password;
     
-    @Lob
     @Column(name = "profile_picture", columnDefinition = "bytea")
     private byte[] profilePicture;
 
